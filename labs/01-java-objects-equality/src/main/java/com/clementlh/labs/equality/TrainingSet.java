@@ -25,4 +25,28 @@ public final class TrainingSet {
     public double loadKg() {
         return loadKg;
     }
+
+
+    // Pour considérer que 2 objets sont "égaux" on regarde si leurs attributs sont égaux,
+    // Si c'est le cas même s'ils n'ont pas la meme ref ils seront considérés comme égaux
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        TrainingSet that = (TrainingSet) obj;
+        return repetitions == that.repetitions &&
+                Double.compare(loadKg, that.loadKg) == 0 &&
+                Objects.equals(exercise, that.exercise);
+    }
+
+    // En fait si on instancie 2 objets différents mais avec les mêmes attributs, alors ils auront le même hash
+    // Donc si on les ajoute dans une liste, il n'y aura pas de doublons.
+    @Override
+    public int hashCode() {
+        return Objects.hash(exercise, repetitions, loadKg);
+    }
 }
