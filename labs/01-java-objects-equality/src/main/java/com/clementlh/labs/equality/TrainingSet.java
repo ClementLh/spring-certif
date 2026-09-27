@@ -43,8 +43,8 @@ public final class TrainingSet {
                 Objects.equals(exercise, that.exercise);
     }
 
-    // En fait si on instancie 2 objets différents mais avec les mêmes attributs, alors ils auront le même hash
-    // Donc si on les ajoute dans une liste, il n'y aura pas de doublons.
+    // En fait si on instancie 2 objets différents, mais avec les mêmes attributs, alors ils auront le même hash
+    // Donc si on ajoutes 2 objets différents mais avec les mêmes attributs dans un HashSet, il n'y aura qu'un seul élément dans le HashSet
     @Override
     public int hashCode() {
         return Objects.hash(exercise, repetitions, loadKg);
