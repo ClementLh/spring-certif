@@ -135,3 +135,18 @@ Je dois également distinguer :
 Collections : 2/5 → 3/5 en cours de consolidation.
 
 Je sais désormais choisir une collection à partir de contraintes concrètes de recherche, d'ordre et d'unicité. Je dois encore progresser sur la vérification systématique des invariants de la structure choisie et sur la conception des tests qui démontrent réellement ces propriétés.
+
+
+#### Validation finale
+
+La première implémentation avait une bonne structure mais une mauvaise clé UUID et une suppression incorrecte via Iterator.remove(). J'ai corrigé ces deux points et ajouté une couverture de tests correspondant aux invariants du store.
+
+La version finale utilise :
+- LinkedHashMap<UUID, TrainingSet> ;
+- trainingSet.id() comme clé ;
+- suppression du premier élément lorsque la limite de 100 est dépassée ;
+- une copie de la collection pour findAll() ;
+- une API publique ;
+- des tests sur le lookup, l'ordre, la limite, l'éviction, les doublons métier et l'encapsulation.
+
+J2 est maintenant considéré comme validé. La leçon principale est de relier systématiquement le choix de structure, ses invariants, le contrat de l'API et les tests qui démontrent ces propriétés.
