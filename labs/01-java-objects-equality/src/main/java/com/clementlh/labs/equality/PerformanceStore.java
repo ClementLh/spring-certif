@@ -1,15 +1,19 @@
 package com.clementlh.labs.equality;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class PerformanceStore {
 
     private final LinkedHashMap<UUID, TrainingSet> trainingSets = new LinkedHashMap<>();
 
     void add(TrainingSet trainingSet) {
-        trainingSets.put(UUID.randomUUID(), trainingSet);
+        trainingSets.put(trainingSet.id(), trainingSet);
         if (trainingSets.size() > 100) {
-            trainingSets.remove(trainingSets.keySet().iterator().next());
+            trainingSets.keySet().iterator().remove();
         }
 
     }
