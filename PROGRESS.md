@@ -18,7 +18,7 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 | Domaine | Niveau | Preuve attendue | Statut |
 |---|---:|---|---|
 | Java fondamentaux | 0 | Labs + quiz + oral | À commencer |
-| Collections / generics | 0 | Exercices + complexité | À commencer |
+| Collections / generics | 3 | Exercices + complexité | Niveau consolidé après J2 |
 | Streams | 0 | Labs + alternatives impératives | À commencer |
 | JVM | 0 | Expériences + diagnostics | À commencer |
 | Concurrence | 0 | Tests de course + explication JMM | À commencer |
@@ -40,8 +40,8 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 ## Jalons
 
 - [ ] J0 — dépôt initialisé
-- [ ] J1 — Java objets / égalité / immutabilité
-- [ ] J2 — collections / generics
+- [x] J1 — Java objets / égalité / immutabilité
+- [x] J2 — collections / generics
 - [ ] J3 — streams / fonctionnel
 - [ ] J4 — JVM / mémoire
 - [ ] J5 — concurrence
