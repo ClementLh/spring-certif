@@ -25,6 +25,7 @@
 
     <modules>
         <module>labs/01-java-objects-equality</module>
+        <module>labs/02-java-streams-functional</module>
         <module>projects/fit-performance</module>
     </modules>
 </project>
