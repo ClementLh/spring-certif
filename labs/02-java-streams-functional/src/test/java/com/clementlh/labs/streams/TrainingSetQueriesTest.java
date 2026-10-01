@@ -1,7 +1,6 @@
 package com.clementlh.labs.streams;
 
 import com.clementlh.labs.equality.TrainingSet;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -33,6 +32,36 @@ class TrainingSetQueriesTest {
 
         assertThat(queries.findUniqueExercisesAtLeast80Kg(trainingSets))
                 .containsExactly("Back Squat");
+    }
+
+    @Test
+    void should_concatenate_string_values_with_reduce() {
+        assertThat(queries.concatenateValues(List.of("A", "B", "C", "D")))
+                .isEqualTo("ABCD");
+    }
+
+    @Test
+    void should_return_empty_string_when_concatenating_empty_values() {
+        assertThat(queries.concatenateValues(List.of()))
+                .isEmpty();
+    }
+
+    @Test
+    void should_sum_training_set_loads_with_reduce() {
+        List<TrainingSet> trainingSets = List.of(
+                new TrainingSet("Back Squat", 5, 100.0),
+                new TrainingSet("Deadlift", 3, 140.0),
+                new TrainingSet("Bench Press", 5, 80.0)
+        );
+
+        assertThat(queries.sumLoadsWithReduce(trainingSets))
+                .isEqualTo(320.0);
+    }
+
+    @Test
+    void should_return_zero_when_summing_empty_training_sets_with_reduce() {
+        assertThat(queries.sumLoadsWithReduce(List.of()))
+                .isEqualTo(0.0);
     }
 
     @Test
