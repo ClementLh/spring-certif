@@ -8,10 +8,25 @@ public class TrainingSetQueries {
 
     public List<String> findUniqueExercisesAtLeast80Kg(List<TrainingSet> trainingSets) {
 
-        return trainingSets.stream().filter(trainingSet -> trainingSet.loadKg() >= 80.0)
+        return trainingSets.stream()
+                .filter(trainingSet -> trainingSet.loadKg() >= 80.0)
                 .map(TrainingSet::exercise)
                 .distinct()
                 .sorted()
                 .toList();
     }
+    public String concatenateValues(List<String> values) {
+        return values.stream()
+                .reduce("", String::concat, String::concat);
+    }
+
+    public double sumLoadsWithReduce(List<TrainingSet> trainingSets) {
+        return trainingSets.stream()
+                .reduce(
+                        0.0,
+                        (totalLoad, trainingSet) -> totalLoad + trainingSet.loadKg(),
+                        Double::sum
+                );
+    }
+
 }
