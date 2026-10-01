@@ -7,6 +7,11 @@ import java.util.List;
 public class TrainingSetQueries {
 
     public List<String> findUniqueExercisesAtLeast80Kg(List<TrainingSet> trainingSets) {
-        throw new UnsupportedOperationException("TODO: implement J3 Stream pipeline");
+
+        return trainingSets.stream().filter(trainingSet -> trainingSet.loadKg() >= 80.0)
+                .map(TrainingSet::exercise)
+                .distinct()
+                .sorted()
+                .toList();
     }
 }

@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled("Activer après implémentation de TrainingSetQueries")
 class TrainingSetQueriesTest {
 
     private final TrainingSetQueries queries = new TrainingSetQueries();
