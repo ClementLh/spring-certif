@@ -3,8 +3,8 @@ package com.clementlh.labs.streams;
 import com.clementlh.labs.equality.TrainingSet;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -79,18 +79,15 @@ class TrainingSetQueriesTest {
     }
 
     @Test
-    void should_sort_exercise_names_alphabetically_with_reduce() {
+    void should_demonstrate_different_results_between_sequential_and_parallel_reduce() {
+        List<Integer> integers = IntStream.rangeClosed(1, 100)
+                .boxed()
+                .toList();
 
-        List<Integer> integers = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            integers.add((int) (Math.random() * 100));
-        }
+        int sequential = queries.subtractWithSequentialReduce(integers);
+        int parallel = queries.subtractWithParallelReduce(integers);
 
-        int reduce = queries.subtractWithReduce(integers);
-
-        int parallel = queries.subtractWithParallel(integers);
-        System.out.println("Reduce result: " + reduce);
-        System.out.println("Parallel result: " + parallel);
-        assertNotEquals(reduce, parallel);
+        assertThat(sequential).isEqualTo(-5050);
+        assertNotEquals(sequential, parallel);
     }
 }
