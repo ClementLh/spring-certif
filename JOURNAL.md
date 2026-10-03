@@ -150,3 +150,87 @@ La version finale utilise :
 - des tests sur le lookup, l'ordre, la limite, l'éviction, les doublons métier et l'encapsulation.
 
 J2 est maintenant considéré comme validé. La leçon principale est de relier systématiquement le choix de structure, ses invariants, le contrat de l'API et les tests qui démontrent ces propriétés.
+
+
+### J3 — Streams et programmation fonctionnelle
+
+#### Pipeline Stream
+
+Un Stream représente un pipeline de traitement plutôt qu'une collection de données modifiable. Les opérations intermédiaires construisent le pipeline et sont évaluées de manière paresseuse ; une opération terminale déclenche le traitement.
+
+Concepts consolidés :
+- `filter` conserve les éléments correspondant à un prédicat et conserve le type du Stream ;
+- `map` transforme chaque élément et peut changer son type ;
+- `mapToInt` / `mapToDouble` produisent des streams spécialisés pour les primitives ;
+- `distinct` utilise l'égalité des éléments ;
+- `sorted` ordonne les éléments mais reste une opération intermédiaire ;
+- `toList` matérialise le résultat et termine le pipeline ;
+- un Stream déjà consommé ne doit pas être réutilisé.
+
+Point important : l'ordre des opérations peut changer le résultat. Dans FitPerformance, `distinct()` doit intervenir après `map(TrainingSet::exercise)` lorsqu'on veut supprimer les doublons de noms d'exercices, car deux `TrainingSet` de même contenu peuvent avoir des UUID différents et rester différents selon `equals()`.
+
+#### reduce
+
+`reduce` permet de combiner plusieurs éléments en un résultat unique.
+
+Pour `reduce(identity, accumulator)` :
+- identity = valeur neutre ;
+- accumulator = combinaison du résultat courant avec le prochain élément.
+
+Pour `reduce(identity, accumulator, combiner)` avec changement de type :
+- T = type des éléments du Stream ;
+- U = type du résultat accumulé ;
+- identity = valeur neutre de type U ;
+- accumulator = (U, T) -> U ;
+- combiner = (U, U) -> U.
+
+Exemple étudié :
+`Stream<TrainingSet>` vers `Double` avec une somme de charges.
+
+Une identity doit être neutre pour l'opération : 0 pour l'addition, 1 pour la multiplication.
+
+`max()`, `average()`, `sum()` et autres opérations spécialisées doivent être préférées à un `reduce` artificiel lorsque l'API fournit directement l'opération recherchée.
+
+`mapToDouble(...).max()` retourne un `OptionalDouble` et conserve uniquement la valeur numérique. `max(Comparator)` retourne un `Optional<TrainingSet>` et conserve l'objet complet.
+
+#### Associativité et parallelStream
+
+L'associativité signifie que le regroupement des opérations ne change pas le résultat :
+`(a + b) + c = a + (b + c)`.
+
+La commutativité signifie que l'ordre ne change pas le résultat :
+`a + b = b + a`.
+
+Ces propriétés ne doivent pas être confondues. L'addition possède les deux ; la concaténation est associative mais pas commutative.
+
+Une réduction avec une opération non associative, comme la soustraction, peut produire un résultat différent entre Stream séquentiel et parallèle. Le test expérimental a été rendu déterministe avec une séquence fixe de 1 à 100.
+
+#### Collectors
+
+`collect` sert à construire un résultat ou une structure à partir du Stream.
+
+`groupingBy(classifier)` produit par exemple :
+`Map<String, List<TrainingSet>>`.
+
+Le classifier produit la clé du groupe. Ce n'est pas nécessairement une condition.
+
+Un downstream collector permet d'agréger chaque groupe :
+- `counting()` → `Map<String, Long>` ;
+- `averagingDouble(...)` → `Map<String, Double>`.
+
+`partitioningBy(predicate)` est adapté à une partition en deux groupes :
+`Map<Boolean, List<TrainingSet>>`.
+
+`mapping(..., downstream)` permet de transformer les éléments à l'intérieur de chaque groupe avant d'appliquer le collector final.
+
+`toMap(keyMapper, valueMapper, mergeFunction)` est une alternative à `groupingBy` lorsque le résultat final est directement une valeur par clé. Avec plusieurs éléments pour une même clé, la fonction de fusion doit définir la règle métier. Exemple étudié :
+`Double::max` pour obtenir la charge maximale par exercice.
+
+#### Erreurs et corrections
+
+- J'ai d'abord confondu le résultat de `mapToDouble(...).max()` avec `Double` ; le type exact est `OptionalDouble`.
+- J'ai d'abord confondu `max(Comparator)` avec `TrainingSet` ; le type exact est `Optional<TrainingSet>`.
+- J'ai confondu `distinct` avec `filter` ; `distinct` traite l'égalité, tandis que `filter` applique un prédicat.
+- J'ai attribué à l'absence de variable réassignée la conservation des objets dans `reduce` ; la conservation dépend du type et de la valeur retournés par l'accumulateur, pas du nom de la variable.
+- J'ai utilisé le hasard dans un test expérimental ; il a été remplacé par des données déterministes.
+- J'ai confondu associativité et commutativité ; l'une concerne le regroupement, l'autre l'ordre.
