@@ -7,7 +7,6 @@ import java.util.List;
 public class TrainingSetQueries {
 
     public List<String> findUniqueExercisesAtLeast80Kg(List<TrainingSet> trainingSets) {
-
         return trainingSets.stream()
                 .filter(trainingSet -> trainingSet.loadKg() >= 80.0)
                 .map(TrainingSet::exercise)
@@ -15,6 +14,7 @@ public class TrainingSetQueries {
                 .sorted()
                 .toList();
     }
+
     public String concatenateValues(List<String> values) {
         return values.stream()
                 .reduce("", String::concat, String::concat);
@@ -29,14 +29,13 @@ public class TrainingSetQueries {
                 );
     }
 
-    public int subtractWithReduce(List<Integer> values) {
-
+    public int subtractWithSequentialReduce(List<Integer> values) {
         return values.stream()
-            .reduce(0, (result, value) -> result - value);
+                .reduce(0, (result, value) -> result - value);
     }
 
-    public int subtractWithParallel(List<Integer> values) {
-        return values.parallelStream().reduce(0, (result, value) -> result - value);
+    public int subtractWithParallelReduce(List<Integer> values) {
+        return values.parallelStream()
+                .reduce(0, (result, value) -> result - value);
     }
-
 }
