@@ -3,9 +3,11 @@ package com.clementlh.labs.streams;
 import com.clementlh.labs.equality.TrainingSet;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TrainingSetQueriesTest {
 
@@ -74,5 +76,21 @@ class TrainingSetQueriesTest {
 
         assertThat(queries.findUniqueExercisesAtLeast80Kg(trainingSets))
                 .containsExactly("Back Squat", "Bench Press", "Deadlift");
+    }
+
+    @Test
+    void should_sort_exercise_names_alphabetically_with_reduce() {
+
+        List<Integer> integers = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            integers.add((int) (Math.random() * 100));
+        }
+
+        int reduce = queries.subtractWithReduce(integers);
+
+        int parallel = queries.subtractWithParallel(integers);
+        System.out.println("Reduce result: " + reduce);
+        System.out.println("Parallel result: " + parallel);
+        assertNotEquals(reduce, parallel);
     }
 }

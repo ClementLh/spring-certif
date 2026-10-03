@@ -29,4 +29,14 @@ public class TrainingSetQueries {
                 );
     }
 
+    public int subtractWithReduce(List<Integer> values) {
+
+        return values.stream()
+            .reduce(0, (result, value) -> result - value);
+    }
+
+    public int subtractWithParallel(List<Integer> values) {
+        return values.parallelStream().reduce(0, (result, value) -> result - value);
+    }
+
 }
