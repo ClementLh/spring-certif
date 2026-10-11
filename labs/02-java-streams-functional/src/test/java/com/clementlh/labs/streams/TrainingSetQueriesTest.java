@@ -84,6 +84,7 @@ class TrainingSetQueriesTest {
         assertThat(queries.subtractWithSequentialReduce(integers))
                 .isEqualTo(-10);
     }
+
     @Test
     void should_group_training_sets_by_exercise() {
         List<TrainingSet> trainingSets = List.of(
