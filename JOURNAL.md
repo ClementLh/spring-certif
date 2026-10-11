@@ -310,4 +310,24 @@ Les huit besoins portent sur :
 
 Les tests sont désactivés tant que l'implémentation n'est pas terminée. Une fois les méthodes implémentées, retirer `@Disabled`, exécuter `mvn -pl labs/02-java-streams-functional -am test`, puis demander une review.
 
-Ce jalon n'est pas encore validé : les exercices précédents ont permis d'utiliser seul plusieurs opérations, mais il faut encore réaliser le capstone, vérifier les tests et être capable d'expliquer les compromis et les types de chaque méthode.
+#### Validation du capstone J3
+
+L'implémentation des huit méthodes de `SessionTrainingSetQueries` est terminée et a été revue statiquement. Elle couvre `flatMap`, `filter`, `map`, `distinct`, `sorted`, `mapToDouble`, `sum`, `max(Comparator)`, `groupingBy`, `counting`, `averagingDouble`, `partitioningBy`, `mapping` et `findFirst`.
+
+L'apprenant a exécuté la commande suivante et a confirmé le résultat `BUILD SUCCESS` :
+
+```bash
+mvn -pl labs/02-java-streams-functional -am test
+```
+
+Le jalon J3 est donc considéré comme validé côté implémentation, compilation et tests automatisés. La revue a aussi identifié des améliorations possibles de couverture : ajouter des tests sur les entrées vides pour davantage de méthodes et vérifier explicitement l'identité de l'instance retournée par `findHeaviestSet`, en plus de son égalité métier.
+
+#### Diagnostic Maven — parent POM
+
+La commande a d'abord échoué parce que le parent relatif était implicitement recherché à `../pom.xml`, alors que les modules imbriqués dans `labs/...` et `projects/...` doivent remonter de deux niveaux jusqu'au POM racine. Les trois POM enfants déclarent maintenant explicitement :
+
+```xml
+<relativePath>../../pom.xml</relativePath>
+```
+
+Après cette correction, l'exécution du build a réussi. À retenir : lors d'un diagnostic de parent POM Maven, vérifier d'abord le chemin relatif depuis le répertoire du module, ainsi que les coordonnées `groupId`, `artifactId` et `version` du parent.
