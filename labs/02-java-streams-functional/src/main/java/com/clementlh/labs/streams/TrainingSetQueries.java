@@ -32,11 +32,17 @@ public class TrainingSetQueries {
                 );
     }
 
+    /**
+     * Educational counterexample: subtraction is not associative, so this is not a valid general reduction.
+     */
     public int subtractWithSequentialReduce(List<Integer> values) {
         return values.stream()
                 .reduce(0, (result, value) -> result - value);
     }
 
+    /**
+     * Educational counterexample only: the result must not be relied on because subtraction is not associative.
+     */
     public int subtractWithParallelReduce(List<Integer> values) {
         return values.parallelStream()
                 .reduce(0, (result, value) -> result - value);
