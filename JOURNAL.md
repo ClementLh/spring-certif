@@ -234,3 +234,80 @@ Un downstream collector permet d'agréger chaque groupe :
 - J'ai attribué à l'absence de variable réassignée la conservation des objets dans `reduce` ; la conservation dépend du type et de la valeur retournés par l'accumulateur, pas du nom de la variable.
 - J'ai utilisé le hasard dans un test expérimental ; il a été remplacé par des données déterministes.
 - J'ai confondu associativité et commutativité ; l'une concerne le regroupement, l'autre l'ordre.
+
+
+#### flatMap et pipelines imbriqués
+
+Quand une collection contient des collections, `stream()` sur la collection externe produit un `Stream<List<TrainingSet>>`. `flatMap(List::stream)` transforme chaque liste en stream puis aplatit les sous-streams en un seul `Stream<TrainingSet>`.
+
+`map` transforme un élément en un autre élément (`T -> R`). `flatMap` est utile lorsqu'une transformation produit une séquence ou un stream d'éléments, puis qu'il faut aplatir ces séquences.
+
+Pour le modèle final, `List<List<TrainingSet>> sessions` est utilisé sans créer une classe métier Session : chaque liste interne représente une séance et son ordre fait partie du contrat pour les requêtes qui recherchent le premier élément.
+
+#### Short-circuit et évaluation paresseuse
+
+Les opérations intermédiaires comme `filter`, `map` et `flatMap` construisent un pipeline et ne déclenchent généralement pas le parcours seules.
+
+Opérations de short-circuit importantes :
+- `anyMatch(predicate)` : au moins un élément convient ;
+- `allMatch(predicate)` : tous les éléments conviennent ;
+- `noneMatch(predicate)` : aucun élément ne convient ;
+- `findFirst()` : premier élément selon l'ordre de rencontre ;
+- `findAny()` : un élément correspondant, sans garantie qu'il soit le premier.
+
+Elles retournent un résultat dès qu'elles peuvent conclure. `count()` n'est pas un short-circuit général ; avec un filtre, il faut normalement déterminer combien d'éléments passent ce filtre.
+
+Ne pas confondre le type du résultat :
+- match → `boolean` ;
+- count → `long` ;
+- findFirst/findAny → `Optional<T>`.
+
+#### Effets de bord
+
+Éviter de remplir une collection externe depuis un pipeline, en particulier avec `parallelStream().forEach(...)`. Une `ArrayList` partagée n'est pas conçue pour des mutations concurrentes. Préférer l'expression directe du résultat avec `map(...).toList()`, `collect(...)` ou un Collector approprié.
+
+Les opérations de Stream doivent éviter les modifications de la source pendant le traitement et les effets de bord dans les fonctions passées au pipeline. `forEach` reste adapté lorsqu'un effet externe est le but réel, par exemple une journalisation.
+
+#### Optional
+
+`Optional<T>` représente une valeur qui peut être absente, souvent à la sortie de `findFirst`, `findAny` ou `max(Comparator)`.
+
+Types appris :
+- `mapToDouble(...).max()` → `OptionalDouble` ;
+- `max(Comparator)` sur `Stream<TrainingSet>` → `Optional<TrainingSet>` ;
+- `Optional<TrainingSet>.map(TrainingSet::exercise)` → `Optional<String>` ;
+- `orElseThrow()` retourne la valeur ou lance une exception si elle est absente ;
+- `orElse(null)` réintroduit `null` et annule une partie de l'intérêt d'Optional ;
+- `ifPresent` exécute une action si la valeur est présente, mais n'est pas une façon générale de retourner la valeur.
+
+Point à réviser : différence entre `orElse(defaultValue)` et `orElseGet(supplier)`, notamment le moment où l'expression de repli est évaluée.
+
+#### Choisir une opération en fonction du résultat métier
+
+Avant de construire un pipeline, déterminer le type de résultat voulu :
+- nombre : `count`, `sum`, `average`, `min`, `max` sur un stream primitif ;
+- objet entier : `max(Comparator)`, `findFirst`, `findAny` ;
+- liste filtrée / transformée : `filter`, `map`, éventuellement `distinct` / `sorted`, puis `toList` ;
+- map de groupes : `collect(groupingBy(...))` ;
+- deux groupes booléens : `partitioningBy(...)` ;
+- map d'une valeur par clé avec doublons : `toMap(..., mergeFunction)`.
+
+Préférer une opération spécialisée et explicite à un `reduce` lorsque l'API offre déjà `sum`, `average`, `max` ou un Collector adapté.
+
+#### Exercice final J3 — contrat de travail
+
+L'exercice final est initialisé dans `exercises/02-java-streams-functional/FINAL-EXERCISE.md`, avec la classe `SessionTrainingSetQueries` et les tests de contrat `SessionTrainingSetQueriesTest`.
+
+Les huit besoins portent sur :
+1. noms d'exercices uniques avec charge >= 100 kg, triés ;
+2. somme des charges de toutes les séances ;
+3. TrainingSet le plus lourd ;
+4. nombre de séries par exercice ;
+5. charge moyenne par exercice ;
+6. partition à 100 kg ;
+7. liste des charges par exercice ;
+8. première série >= 100 kg dans la première séance qui en possède une.
+
+Les tests sont désactivés tant que l'implémentation n'est pas terminée. Une fois les méthodes implémentées, retirer `@Disabled`, exécuter `mvn -pl labs/02-java-streams-functional -am test`, puis demander une review.
+
+Ce jalon n'est pas encore validé : les exercices précédents ont permis d'utiliser seul plusieurs opérations, mais il faut encore réaliser le capstone, vérifier les tests et être capable d'expliquer les compromis et les types de chaque méthode.
