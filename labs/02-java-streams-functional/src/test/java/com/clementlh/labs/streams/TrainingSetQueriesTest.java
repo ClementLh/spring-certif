@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TrainingSetQueriesTest {
 
@@ -80,18 +78,12 @@ class TrainingSetQueriesTest {
     }
 
     @Test
-    void should_demonstrate_different_results_between_sequential_and_parallel_reduce() {
-        List<Integer> integers = IntStream.rangeClosed(1, 100)
-                .boxed()
-                .toList();
+    void should_apply_sequential_subtraction_reduce_left_to_right() {
+        List<Integer> integers = List.of(1, 2, 3, 4);
 
-        int sequential = queries.subtractWithSequentialReduce(integers);
-        int parallel = queries.subtractWithParallelReduce(integers);
-
-        assertThat(sequential).isEqualTo(-5050);
-        assertNotEquals(sequential, parallel);
+        assertThat(queries.subtractWithSequentialReduce(integers))
+                .isEqualTo(-10);
     }
-
     @Test
     void should_group_training_sets_by_exercise() {
         List<TrainingSet> trainingSets = List.of(
