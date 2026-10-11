@@ -40,7 +40,7 @@ Cette classe simule un composant qui conserve des tableaux d'octets. Elle est vo
 
 Les méthodes ont les contrats suivants :
 
-- `retainPayload(int sizeInBytes)` : conserve un nouveau `byte[]) de la taille demandée ; une taille nulle ou négative doit provoquer `IllegalArgumentException`.
+- `retainPayload(int sizeInBytes)` : conserve un nouveau `byte[]` de la taille demandée ; une taille nulle ou négative doit provoquer `IllegalArgumentException`.
 - `releaseAll()` : retire toutes les références détenues par le registre.
 - `retainedPayloadCount()` : renvoie le nombre de tableaux encore référencés par le registre.
 - `retainedBytes()` : renvoie la somme de la longueur des tableaux conservés.
