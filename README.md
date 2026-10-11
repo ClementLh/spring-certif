@@ -109,10 +109,14 @@ spring-certif/
 │       └── DOMAIN.md
 │
 ├── exercises/
-│   └── 01-java-objects-equality/
+│   ├── 01-java-objects-equality/
+│   ├── 02-java-streams-functional/
+│   └── 03-jvm-memory/
 │
 ├── labs/
-│   └── 01-java-objects-equality/
+│   ├── 01-java-objects-equality/
+│   ├── 02-java-streams-functional/
+│   └── 03-jvm-memory/
 │
 └── projects/
     └── fit-performance/
