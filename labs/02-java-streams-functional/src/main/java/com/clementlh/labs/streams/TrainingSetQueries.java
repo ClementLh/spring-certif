@@ -2,9 +2,9 @@ package com.clementlh.labs.streams;
 
 import com.clementlh.labs.equality.TrainingSet;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TrainingSetQueries {
@@ -68,15 +68,9 @@ public class TrainingSetQueries {
                 .collect(Collectors.groupingBy(
                         TrainingSet::exercise,
                         Collectors.collectingAndThen(
-                                Collectors.maxBy(java.util.Comparator.comparingDouble(TrainingSet::loadKg)),
-                                Optional::get
+                                Collectors.maxBy(Comparator.comparingDouble(TrainingSet::loadKg)),
+                                maxSet -> maxSet.orElseThrow().loadKg()
                         )
-                ))
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().loadKg()
                 ));
     }
 
