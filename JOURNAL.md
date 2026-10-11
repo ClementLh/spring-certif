@@ -331,3 +331,26 @@ La commande a d'abord échoué parce que le parent relatif était implicitement 
 ```
 
 Après cette correction, l'exécution du build a réussi. À retenir : lors d'un diagnostic de parent POM Maven, vérifier d'abord le chemin relatif depuis le répertoire du module, ainsi que les coordonnées `groupId`, `artifactId` et `version` du parent.
+
+
+### J4 — JVM et mémoire : lancement
+
+#### Première séance : atteignabilité et rétention
+
+Le premier exercice est initialisé dans `exercises/03-jvm-memory/README.md`, avec le module `labs/03-jvm-memory` et les tests de contrat `PayloadRetentionRegistryTest`.
+
+L'objectif est de comprendre qu'un objet peut rester atteignable via une référence forte détenue par une collection, même lorsque le code métier n'en a plus besoin. `releaseAll()` retire les références détenues par le registre ; cela rend éventuellement les tableaux récupérables si aucune autre référence ne les conserve, mais ne garantit pas que le GC les collecte immédiatement.
+
+Le modèle stack / heap / metaspace est introduit avec une mise en garde : c'est un modèle pédagogique. Les optimisations de la JVM, dont l'escape analysis, peuvent modifier la manière dont les allocations se manifestent à l'exécution.
+
+Les tests vérifient le contrat du registre, pas le moment du GC. Ils ne doivent pas dépendre de `System.gc()`, d'une valeur exacte de mémoire utilisée par le processus ou d'une collecte immédiate.
+
+#### Validation
+
+J4 est en cours et **n'est pas validé**. Il faut implémenter les quatre méthodes, retirer `@Disabled`, exécuter :
+
+```bash
+mvn -pl labs/03-jvm-memory -am test
+```
+
+Puis expliquer la différence entre objet alloué, objet atteignable, objet devenu éligible au GC et mémoire effectivement rendue au système. Les séances suivantes couvriront les racines GC et l'utilisation progressive des outils de diagnostic du JDK.
