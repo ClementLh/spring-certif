@@ -1,12 +1,10 @@
 package com.clementlh.labs.jvm;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-@Disabled("Retirer cette annotation après implémentation de PayloadRetentionRegistry")
 class PayloadRetentionRegistryTest {
 
     private final PayloadRetentionRegistry registry = new PayloadRetentionRegistry();

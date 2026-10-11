@@ -11,18 +11,25 @@ public final class PayloadRetentionRegistry {
     private final List<byte[]> retainedPayloads = new ArrayList<>();
 
     public void retainPayload(int sizeInBytes) {
-        throw new UnsupportedOperationException("TODO: implement J4 retention exercise");
+        if (sizeInBytes <= 0) {
+            throw new IllegalArgumentException("Valeur de l'objet négative ou nulle");
+        }
+        retainedPayloads.add(new byte[sizeInBytes]);
     }
 
     public void releaseAll() {
-        throw new UnsupportedOperationException("TODO: implement J4 retention exercise");
+        retainedPayloads.clear();
     }
 
     public int retainedPayloadCount() {
-        throw new UnsupportedOperationException("TODO: implement J4 retention exercise");
+        return retainedPayloads.size();
     }
 
     public long retainedBytes() {
-        throw new UnsupportedOperationException("TODO: implement J4 retention exercise");
+        long total = 0;
+        for (byte[] payload : retainedPayloads) {
+            total += payload.length;
+        }
+        return total;
     }
 }
