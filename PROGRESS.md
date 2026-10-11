@@ -19,7 +19,7 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 |---|---:|---|---|
 | Java fondamentaux | 0 | Labs + quiz + oral | À commencer |
 | Collections / generics | 3 | Exercices + complexité | Niveau consolidé après J2 |
-| Streams | 2 | Labs + alternatives impératives | Utilisé seul, notions en consolidation |
+| Streams | 2 | Labs + alternatives impératives | Exercices ciblés réalisés ; capstone à implémenter et reviewer |
 | JVM | 0 | Expériences + diagnostics | À commencer |
 | Concurrence | 0 | Tests de course + explication JMM | À commencer |
 | Spring Core | 0 | Labs container/proxy | À commencer |
