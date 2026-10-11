@@ -65,3 +65,14 @@ Après implémentation :
 2. revue de code ;
 3. explication orale du pipeline ;
 4. exercice complémentaire sur `reduce`.
+
+
+---
+
+## Exercice final J3
+
+Après ce premier pipeline, passer à l'exercice complet sur plusieurs séances :
+
+[`FINAL-EXERCISE.md`](FINAL-EXERCISE.md)
+
+L'exercice final couvre `flatMap`, opérations numériques spécialisées, `max(Comparator)`, `groupingBy`, `counting`, `averagingDouble`, `partitioningBy`, `mapping`, `Optional` et `findFirst`. La classe de travail et ses tests de contrat sont dans le module `labs/02-java-streams-functional`.
