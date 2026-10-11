@@ -19,7 +19,7 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 |---|---:|---|---|
 | Java fondamentaux | 0 | Labs + quiz + oral | À commencer |
 | Collections / generics | 3 | Exercices + complexité | Niveau consolidé après J2 |
-| Streams | 2 | Labs + alternatives impératives | Exercices ciblés réalisés ; capstone à implémenter et reviewer |
+| Streams | 3 | Capstone + tests Maven + explication des choix | J3 validé ; continuer à consolider les cas limites et les types de retour |
 | JVM | 0 | Expériences + diagnostics | À commencer |
 | Concurrence | 0 | Tests de course + explication JMM | À commencer |
 | Spring Core | 0 | Labs container/proxy | À commencer |
@@ -42,7 +42,7 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 - [ ] J0 — dépôt initialisé
 - [x] J1 — Java objets / égalité / immutabilité
 - [x] J2 — collections / generics
-- [ ] J3 — streams / fonctionnel
+- [x] J3 — streams / fonctionnel
 - [ ] J4 — JVM / mémoire
 - [ ] J5 — concurrence
 - [ ] J6 — Spring Core
