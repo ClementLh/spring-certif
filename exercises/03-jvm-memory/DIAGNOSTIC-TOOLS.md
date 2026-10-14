@@ -116,3 +116,19 @@ Note dans ton journal :
 6. pourquoi ce laboratoire montre une rétention volontaire et ne constitue pas encore un diagnostic complet d'une fuite mémoire.
 
 Ne commite aucun heap dump ou fichier JFR dans le dépôt : ils peuvent être volumineux et contenir des données sensibles dans des contextes réels.
+
+
+## Exemple d'interprétation — capture JFR du 14 octobre 2026
+
+Deux événements `jdk.GCHeapMemoryUsage` extraits d'une capture ont indiqué :
+
+| Heure | Heap utilisé | Heap committed | Maximum |
+|---|---:|---:|---:|
+| 11:06:13 | 52,8 MB | 90,0 MB | 256,0 MB |
+| 11:07:13 | 101,8 MB | 108,0 MB | 256,0 MB |
+
+Sur ces deux points, la mémoire utilisée augmente de 49,0 MB et la mémoire committed de 18,0 MB. Le maximum reste à 256 MB.
+
+**Conclusion autorisée :** le heap utilisé a augmenté entre les deux événements. C'est compatible avec des allocations pendant la capture, mais cela ne permet pas de déterminer à lui seul quelle part est encore vivante, si une collecte a eu lieu entre les événements, ni si une fuite existe.
+
+**Prochaine vérification utile :** rapprocher les mesures des commandes `add` et `release` réellement saisies, examiner les événements GC dans JFR ou dans `gc.log`, puis comparer l'état après libération et après une éventuelle collecte. Même une baisse du heap utilisé n'est pas une preuve suffisante à elle seule ; une analyse de rétention nécessite de comprendre quelles références gardent les objets atteignables.

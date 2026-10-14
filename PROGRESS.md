@@ -20,8 +20,8 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 | Java fondamentaux | 0 | Labs + quiz + oral | À commencer |
 | Collections / generics | 3 | Exercices + complexité | Niveau consolidé après J2 |
 | Streams | 3 | Capstone + tests Maven + explication des choix | J3 validé ; continuer à consolider les cas limites et les types de retour |
-| JVM | 1 | Lab de rétention + diagnostic JVM | Registre implémenté et relu statiquement ; expérience jcmd/JFR en cours |
-| Concurrence | 0 | Tests de course + explication JMM | À commencer |
+| JVM | 1 | Lab de rétention + diagnostic JVM | JFR observé : heap utilisé de 52,8 à 101,8 MB, committed de 90 à 108 MB, maximum 256 MB ; données insuffisantes pour conclure à une fuite ; J4 reste en cours |
+| Concurrence | 1 | Tests de course + explication JMM | J5 lancé : quiz JMM 4/4 ; exercice du compteur partagé préparé, implémentations et tests à réaliser |
 | Spring Core | 0 | Labs container/proxy | À commencer |
 | Spring Boot | 0 | auto-configuration expliquée | À commencer |
 | SQL / PostgreSQL | 0 | requêtes + EXPLAIN | À commencer |
