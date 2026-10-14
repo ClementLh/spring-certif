@@ -64,3 +64,10 @@ Les tests sont désactivés initialement afin que le squelette compile sans four
 - [ ] l'apprenant sait justifier les compromis entre verrou et atomique.
 
 Ne considère pas J5 comme validé tant que le code, les tests exécutés et l'explication ne sont pas revus.
+
+
+---
+
+## Étape suivante : J5.3 — invariant métier et capacité
+
+Après avoir terminé J5.2, passe à [J5.3 — Capacité d'une séance](J5.3-CAPACITY-INVARIANT.md). L'objectif est de garantir qu'un ensemble d'opérations concurrentes ne dépasse jamais la capacité maximale, et de comprendre pourquoi une opération métier composée nécessite une section critique.
