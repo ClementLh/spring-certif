@@ -79,4 +79,4 @@ mvn -pl labs/03-jvm-memory -am test
 
 ## Étape suivante
 
-Après review, on étudiera le cycle de vie d'un objet et les racines GC, puis on instrumentera un processus Java avec les outils du JDK (par exemple `jcmd`, journaux GC et JFR). Cette expérience simple ne remplace pas un heap dump : elle pose le modèle mental nécessaire pour interpréter ce qu'un outil de diagnostic montre.
+Après review, poursuis avec [l'étape 2 — outils de diagnostic](DIAGNOSTIC-TOOLS.md). Elle utilise `RetentionDemo` pour explorer le processus avec `jcmd`, les journaux GC et JFR. Cette expérience simple ne remplace pas un heap dump : elle pose le modèle mental nécessaire pour interpréter ce qu'un outil de diagnostic montre.
