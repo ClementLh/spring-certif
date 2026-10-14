@@ -345,12 +345,17 @@ Le modèle stack / heap / metaspace est introduit avec une mise en garde : c'est
 
 Les tests vérifient le contrat du registre, pas le moment du GC. Ils ne doivent pas dépendre de `System.gc()`, d'une valeur exacte de mémoire utilisée par le processus ou d'une collecte immédiate.
 
-#### Validation
+#### Revue du premier exercice
 
-J4 est en cours et **n'est pas validé**. Il faut implémenter les quatre méthodes, retirer `@Disabled`, exécuter :
+Le commit `364062999b66be0f5b08e8aef3386315899d01c5` a été relu statiquement. Les quatre méthodes respectent le contrat et les tests sont activés. L'exécution Maven de ce commit reste à confirmer explicitement ; une revue statique ne prouve pas que les tests passent.
 
-```bash
-mvn -pl labs/03-jvm-memory -am test
-```
+La classe `RetentionDemo` et le guide `exercises/03-jvm-memory/DIAGNOSTIC-TOOLS.md` sont ensuite ajoutés pour permettre une expérience avec `jcmd`, les journaux GC et JFR. J4 reste **en cours** tant que l'expérience locale et l'explication des observations ne sont pas terminées.
 
-Puis expliquer la différence entre objet alloué, objet atteignable, objet devenu éligible au GC et mémoire effectivement rendue au système. Les séances suivantes couvriront les racines GC et l'utilisation progressive des outils de diagnostic du JDK.
+
+#### J4 — Étape 2 : outils de diagnostic
+
+Une démo interactive `RetentionDemo` a été ajoutée au lab pour conserver des tableaux d'octets par lots et garder la JVM active pendant l'inspection. Le guide `exercises/03-jvm-memory/DIAGNOSTIC-TOOLS.md` décrit l'usage local de `jcmd`, `GC.heap_info`, `GC.class_histogram`, des journaux GC via `-Xlog:gc*` et d'une courte capture JFR.
+
+Objectif pédagogique : distinguer un compteur applicatif de références retenues des mesures globales du heap, et comprendre que ni `releaseAll()` ni l'absence de références dans le registre ne garantit une collecte immédiate. L'histogramme et les journaux donnent des indices ; une conclusion de fuite demande d'observer l'évolution et de comprendre les chemins de rétention. JFR aide à analyser les événements et les allocations, tandis qu'un heap dump et ses chemins de référence servent à investiguer pourquoi des objets demeurent atteignables.
+
+Cette étape est en cours : collecter des observations sur le processus local, ne commiter aucun `.jfr` ni heap dump, puis discuter les résultats avant la validation de J4.
