@@ -11,11 +11,11 @@ public class AtomicTrainingCounter implements TrainingCounter {
 
     @Override
     public void increment() {
-        throw new UnsupportedOperationException("TODO: use an atomic increment");
+        count.getAndIncrement();
     }
 
     @Override
     public int getCount() {
-        throw new UnsupportedOperationException("TODO: return the current count");
+        return count.get();
     }
 }

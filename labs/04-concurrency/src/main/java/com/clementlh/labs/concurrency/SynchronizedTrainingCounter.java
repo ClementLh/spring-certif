@@ -8,12 +8,12 @@ public class SynchronizedTrainingCounter implements TrainingCounter {
     private int count;
 
     @Override
-    public void increment() {
-        throw new UnsupportedOperationException("TODO: protect the increment");
+    public synchronized void increment() {
+        count++;
     }
 
     @Override
-    public int getCount() {
-        throw new UnsupportedOperationException("TODO: read the count consistently");
+    public synchronized int getCount() {
+        return count;
     }
 }

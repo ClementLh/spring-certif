@@ -9,11 +9,11 @@ public class UnsafeTrainingCounter implements TrainingCounter {
 
     @Override
     public void increment() {
-        throw new UnsupportedOperationException("TODO: implement a plain increment");
+        count++;
     }
 
     @Override
     public int getCount() {
-        throw new UnsupportedOperationException("TODO: return the current count");
+        return count;
     }
 }

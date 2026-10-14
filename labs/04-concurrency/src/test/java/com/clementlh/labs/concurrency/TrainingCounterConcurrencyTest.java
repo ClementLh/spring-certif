@@ -1,6 +1,5 @@
 package com.clementlh.labs.concurrency;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,26 +19,23 @@ class TrainingCounterConcurrencyTest {
     private static final int EXPECTED_COUNT = THREAD_COUNT * INCREMENTS_PER_THREAD;
 
     @Test
-    @Disabled("À activer après l'implémentation de SynchronizedTrainingCounter")
     void synchronized_counter_must_not_lose_increments() throws Exception {
         assertThat(runConcurrentIncrements(new SynchronizedTrainingCounter()))
-                .isEqualTo(EXPECTED_COUNT);
+            .isEqualTo(EXPECTED_COUNT);
     }
 
     @Test
-    @Disabled("À activer après l'implémentation de AtomicTrainingCounter")
     void atomic_counter_must_not_lose_increments() throws Exception {
         assertThat(runConcurrentIncrements(new AtomicTrainingCounter()))
-                .isEqualTo(EXPECTED_COUNT);
+            .isEqualTo(EXPECTED_COUNT);
     }
 
     @Test
-    @Disabled("Test de diagnostic uniquement : observer le résultat sans exiger une perte à chaque exécution")
     void unsafe_counter_experiment() throws Exception {
         int observed = runConcurrentIncrements(new UnsafeTrainingCounter());
 
         System.out.printf("Unsafe counter: observed=%d, expected=%d%n",
-                observed, EXPECTED_COUNT);
+            observed, EXPECTED_COUNT);
 
         // This range check does not assert that a race must be observed.
         assertThat(observed).isBetween(0, EXPECTED_COUNT);
