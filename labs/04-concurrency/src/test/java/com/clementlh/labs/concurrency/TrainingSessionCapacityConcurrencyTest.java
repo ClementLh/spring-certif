@@ -20,7 +20,6 @@ class TrainingSessionCapacityConcurrencyTest {
     private static final int ATTEMPTS_PER_THREAD = 100;
 
     @Test
-    @Disabled("J5.3: remove once reserve() preserves the invariant under concurrency")
     void concurrent_reservations_must_never_exceed_capacity() throws Exception {
         TrainingSessionCapacity session = new TrainingSessionCapacity(CAPACITY);
         AtomicInteger successfulReservations = new AtomicInteger();
@@ -59,14 +58,12 @@ class TrainingSessionCapacityConcurrencyTest {
     }
 
     @Test
-    @Disabled("J5.3: remove once constructor validation is implemented")
     void capacity_must_be_positive() {
         org.junit.jupiter.api.Assertions.assertThrows(
                 IllegalArgumentException.class, () -> new TrainingSessionCapacity(0));
     }
 
     @Test
-    @Disabled("J5.3: remove once reservation validation is implemented")
     void reservation_quantity_must_be_positive() {
         TrainingSessionCapacity session = new TrainingSessionCapacity(CAPACITY);
 

@@ -406,3 +406,8 @@ Le harnais de test utilise un `ExecutorService`, un `CountDownLatch` pour rappro
 - exécuter les tests du module et confirmer le résultat réel ;
 - expliquer pourquoi `CountDownLatch` organise le démarrage sans corriger la race, et pourquoi `Future.get()` permet d'attendre et d'observer les erreurs ;
 - comparer les versions non protégée, `synchronized` et `AtomicInteger` sans supposer qu'une seule exécution incorrecte est garantie pour la version non thread-safe.
+
+### J5.3 — invariant métier : capacité d'une séance
+Synchroniser un compteur atomique ne suffit pas à garantir l'invariant métier. La règle métier porte sur une opération composée : vérifier la capacité disponible et réserver les places doivent être atomiques ensemble. 
+Si deux threads lisent la capacité en même temps et trouvent qu'il reste de la place, ils peuvent tous deux réserver, dépassant ainsi la capacité.
+-> Utiliser le synchronized sur la méthode reserve() pour protéger la lecture et l'écriture de l'état partagé.
