@@ -111,12 +111,14 @@ spring-certif/
 ├── exercises/
 │   ├── 01-java-objects-equality/
 │   ├── 02-java-streams-functional/
-│   └── 03-jvm-memory/
+│   ├── 03-jvm-memory/
+│   └── 04-concurrency/
 │
 ├── labs/
 │   ├── 01-java-objects-equality/
 │   ├── 02-java-streams-functional/
-│   └── 03-jvm-memory/
+│   ├── 03-jvm-memory/
+│   └── 04-concurrency/
 │
 └── projects/
     └── fit-performance/

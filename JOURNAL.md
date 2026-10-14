@@ -359,3 +359,50 @@ Une démo interactive `RetentionDemo` a été ajoutée au lab pour conserver des
 Objectif pédagogique : distinguer un compteur applicatif de références retenues des mesures globales du heap, et comprendre que ni `releaseAll()` ni l'absence de références dans le registre ne garantit une collecte immédiate. L'histogramme et les journaux donnent des indices ; une conclusion de fuite demande d'observer l'évolution et de comprendre les chemins de rétention. JFR aide à analyser les événements et les allocations, tandis qu'un heap dump et ses chemins de référence servent à investiguer pourquoi des objets demeurent atteignables.
 
 Cette étape est en cours : collecter des observations sur le processus local, ne commiter aucun `.jfr` ni heap dump, puis discuter les résultats avant la validation de J4.
+
+
+### J5 — Concurrence et Java Memory Model : démarrage
+
+#### Quiz de compréhension
+
+Le quiz d'introduction a été réussi avec 4 réponses correctes sur 4. Les notions vérifiées sont :
+- `volatile` apporte des garanties de visibilité et d'ordre, mais ne rend pas `count++` atomique ;
+- `synchronized` sur une méthode d'instance verrouille le moniteur de l'instance courante ;
+- un retour réussi de `Thread.join()` établit une relation *happens-before* entre les actions du thread terminé et celles qui suivent dans le thread appelant ;
+- un verrou est pertinent lorsqu'une règle métier implique plusieurs lectures/écritures qui doivent rester cohérentes ensemble.
+
+#### Race condition et perte de mise à jour
+
+Pour un compteur partagé, `count++` est une opération composée : lecture, calcul, écriture. Deux threads peuvent lire la même ancienne valeur puis écrire la même nouvelle valeur ; l'un des incréments est alors perdu. L'atomicité individuelle des lectures/écritures d'un `int` ne rend pas atomique l'ensemble de l'incrément.
+
+Il faut distinguer :
+- **atomicité** : une opération ne peut pas être observée à moitié ;
+- **visibilité** : une écriture d'un thread devient observable par un autre ;
+- **ordre** : les garanties *happens-before* encadrent les réordonnancements permis ;
+- **race condition** : le résultat dépend d'un entrelacement concurrent ;
+- **data race** : accès concurrents conflictuels sans ordre *happens-before* adéquat.
+
+#### JFR — observation enregistrée pendant la transition J4/J5
+
+L'apprenant a partagé deux événements `jdk.GCHeapMemoryUsage` :
+- à 11:06:13, heap utilisé 52,8 MB, committed 90,0 MB, maximum 256,0 MB ;
+- à 11:07:13, heap utilisé 101,8 MB, committed 108,0 MB, maximum 256,0 MB.
+
+L'augmentation de la mémoire utilisée est cohérente avec de l'allocation pendant la capture, mais ces deux points seuls ne démontrent ni une fuite mémoire, ni l'absence de collecte. Il manque notamment le contexte des commandes `add`/`release`, les événements GC et l'évolution après libération. J4 reste donc **en cours** ; aucune conclusion plus forte n'est enregistrée.
+
+#### Exercice J5.2 préparé dans le dépôt
+
+La branche `exercise/j5-concurrency-counter` introduit le lab `labs/04-concurrency` et l'énoncé `exercises/04-concurrency/README.md`. Le travail demandé est de compléter trois implémentations de `TrainingCounter` :
+- `UnsafeTrainingCounter` : incrément non protégé pour l'expérience ;
+- `SynchronizedTrainingCounter` : protection par moniteur ;
+- `AtomicTrainingCounter` : incrément atomique avec `AtomicInteger`.
+
+Le harnais de test utilise un `ExecutorService`, un `CountDownLatch` pour rapprocher le départ des workers et des `Future` pour attendre la fin des tâches et propager leurs exceptions. La cible des versions thread-safe est de 1 000 000 incréments (10 workers × 100 000 appels). L'exercice doit encore être implémenté, exécuté et revu ; la préparation du squelette ne vaut pas validation de J5.
+
+#### Prochaine preuve attendue
+
+- implémenter les trois compteurs sans modifier le contrat ;
+- activer les tests de contrat ;
+- exécuter les tests du module et confirmer le résultat réel ;
+- expliquer pourquoi `CountDownLatch` organise le démarrage sans corriger la race, et pourquoi `Future.get()` permet d'attendre et d'observer les erreurs ;
+- comparer les versions non protégée, `synchronized` et `AtomicInteger` sans supposer qu'une seule exécution incorrecte est garantie pour la version non thread-safe.
