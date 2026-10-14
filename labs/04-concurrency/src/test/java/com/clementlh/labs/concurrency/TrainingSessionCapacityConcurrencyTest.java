@@ -1,6 +1,6 @@
 package com.clementlh.labs.concurrency;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TrainingSessionCapacityConcurrencyTest {
 
@@ -69,5 +69,15 @@ class TrainingSessionCapacityConcurrencyTest {
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 IllegalArgumentException.class, () -> session.reserve(0));
+    }
+
+    @Test
+    void reservation_max_value_no_exception() {
+        TrainingSessionCapacity session = new TrainingSessionCapacity(CAPACITY);
+
+        boolean reserve = session.reserve(Integer.MAX_VALUE);
+
+        assertThat(reserve).isFalse();
+        assertThat(session.reservedCount()).isEqualTo(0);
     }
 }

@@ -28,7 +28,7 @@ public class TrainingSessionCapacity {
         if (places <= 0) {
             throw new IllegalArgumentException();
         }
-        if (reserved + places > capacity) {
+        if (places > capacity - reserved) {
             return false;
         }
         reserved += places;
