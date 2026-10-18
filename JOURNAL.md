@@ -411,3 +411,17 @@ Le harnais de test utilise un `ExecutorService`, un `CountDownLatch` pour rappro
 Synchroniser un compteur atomique ne suffit pas à garantir l'invariant métier. La règle métier porte sur une opération composée : vérifier la capacité disponible et réserver les places doivent être atomiques ensemble. 
 Si deux threads lisent la capacité en même temps et trouvent qu'il reste de la place, ils peuvent tous deux réserver, dépassant ainsi la capacité.
 -> Utiliser le synchronized sur la méthode reserve() pour protéger la lecture et l'écriture de l'état partagé.
+
+
+### J5.4 — visibilité et Java Memory Model (2026-10-18)
+
+L'exercice `VisibilityDemo` compare un drapeau d'arrêt `boolean` ordinaire et un `volatile boolean`. L'apprenant a exécuté la démonstration : dans cette exécution, les deux workers se sont arrêtés. Ce résultat ne prouve pas que le champ ordinaire garantit la visibilité ; l'absence de garantie n'implique pas que l'écriture sera toujours invisible.
+
+Points travaillés pendant la correction :
+- **Visibilité** : une écriture devient observable par un autre thread selon les garanties de synchronisation du Java Memory Model ; ce n'est pas la portée (`scope`) d'une variable.
+- **Atomicité** : une opération est indivisible. `volatile` ne rend pas atomique une opération composée comme `count++` (lecture, calcul, écriture).
+- **`happens-before`** : relation qui garantit les effets de visibilité et d'ordre entre actions ; elle ne supprime pas la concurrence.
+- **`Thread.join()`** : le thread appelant attend la terminaison du thread rejoint ; les actions du worker avant sa terminaison *happen-before* les actions suivant le retour réussi de `join()`. Cela ne sécurise pas les accès concurrents pendant l'exécution.
+- **Invariant métier** : rendre des champs individuellement `volatile` ne rend pas atomique une séquence métier multi-champs, par exemple vérifier puis réserver une place.
+
+Résultat pédagogique : compréhension suffisante après correction guidée des notions de visibilité, atomicité et `happens-before`. La démonstration a été exécutée manuellement, mais aucun résultat Maven n'a été fourni dans la conversation. Ne pas considérer cela comme une preuve de tests automatisés réussis.
