@@ -45,7 +45,7 @@ public class VisibilityDemo {
             while (running && !Thread.currentThread().isInterrupted()) {
                 Thread.onSpinWait();
             }
-            stoppedByFlag.set(!running);
+            stoppedByFlag.set(!running && !Thread.currentThread().isInterrupted());
         }, "ordinary-flag-worker");
 
         // Daemon is an additional safety net if the runtime/JIT does not make
