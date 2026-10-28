@@ -22,7 +22,7 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 | Streams | 3 | Capstone + tests Maven + explication des choix | J3 validé ; continuer à consolider les cas limites et les types de retour |
 | JVM | 1 | Lab de rétention + diagnostic JVM | JFR observé : heap utilisé de 52,8 à 101,8 MB, committed de 90 à 108 MB, maximum 256 MB ; données insuffisantes pour conclure à une fuite ; J4 reste en cours |
 | Concurrence | 2 | Tests de course + explication JMM | J5 en cours : J5.4 visibilité/volatile exécuté et notions consolidées après correction guidée ; build Maven et tests automatisés à confirmer ; exercices J5 précédents à vérifier dans le dépôt |
-| Spring Core | 0 | Labs container/proxy | À commencer |
+| Spring Core | 1 | Lab IoC/DI + tests de contexte + explication | Squelette J6 créé le 2026-10-28 ; diagnostic oral initial correct sur constructeur/configuration ; implémentation et tests à faire |
 | Spring Boot | 0 | auto-configuration expliquée | À commencer |
 | SQL / PostgreSQL | 0 | requêtes + EXPLAIN | À commencer |
 | JPA / Hibernate | 0 | persistence context + N+1 | À commencer |
@@ -45,7 +45,7 @@ Une notion structurante ne sera considérée comme acquise que lorsqu'elle attei
 - [x] J3 — streams / fonctionnel
 - [ ] J4 — JVM / mémoire
 - [ ] J5 — concurrence
-- [ ] J6 — Spring Core
+- [ ] J6 — Spring Core (squelette prêt, implémentation à faire)
 - [ ] J7 — Spring Boot
 - [ ] J8 — SQL / PostgreSQL
 - [ ] J9 — JPA / Hibernate
