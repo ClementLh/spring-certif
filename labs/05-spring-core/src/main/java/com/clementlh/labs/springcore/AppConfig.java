@@ -1,5 +1,6 @@
 package com.clementlh.labs.springcore;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -13,11 +14,13 @@ public class AppConfig {
 
     @Bean
     @Primary
+    @ConditionalOnProperty(name = "training.repository.type", havingValue = "in-memory", matchIfMissing = true)
     public TrainingRepository trainingRepository() {
         return new InMemoryTrainingRepository();
     }
 
     @Bean
+    @ConditionalOnProperty(name = "training.repository.type", havingValue = "jpa")
     public TrainingRepository jpaTrainingRepository() {
         return new JpaTrainingRepository();
     }

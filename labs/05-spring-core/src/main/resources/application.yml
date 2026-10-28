@@ -1,0 +1,3 @@
+training:
+    repository:
+        type: in-memory
