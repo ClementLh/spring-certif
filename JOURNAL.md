@@ -425,3 +425,37 @@ Points travaillés pendant la correction :
 - **Invariant métier** : rendre des champs individuellement `volatile` ne rend pas atomique une séquence métier multi-champs, par exemple vérifier puis réserver une place.
 
 Résultat pédagogique : compréhension suffisante après correction guidée des notions de visibilité, atomicité et `happens-before`. La démonstration a été exécutée manuellement, mais aucun résultat Maven n'a été fourni dans la conversation. Ne pas considérer cela comme une preuve de tests automatisés réussis.
+
+
+### J6 — Spring Core : squelette préparé (2026-10-28)
+
+Le laboratoire J6 a été initialisé dans `labs/05-spring-core` et son parcours d'exercices dans `exercises/05-spring-core/README.md`. Le module Spring Context est ajouté pour travailler sur le conteneur IoC et la configuration explicite.
+
+#### Diagnostic initial de l'apprenant
+
+L'apprenant a correctement identifié l'injection par constructeur, le rôle d'une classe `AppConfig` et la possibilité de fournir un repository via un bean de configuration. Deux nuances ont été corrigées pendant l'échange :
+- Spring instancie les beans au démarrage du contexte, à l'exécution, et non à la compilation ;
+- faire dépendre `TrainingService` d'une interface `TrainingRepository` permet de découpler le service d'une implémentation concrète.
+
+L'apprenant a également anticipé qu'un changement d'implémentation peut se faire dans la configuration, sans modifier le service, si le contrat d'interface reste respecté.
+
+#### Squelette livré — implémentation laissée à l'apprenant
+
+- `TrainingRepository` : contrat à compléter ;
+- `InMemoryTrainingRepository` et `JpaTrainingRepository` : classes candidates à compléter (la seconde est un placeholder, sans JPA réel) ;
+- `TrainingService` : champ final repository, constructeur et délégation à écrire ;
+- `AppConfig` : configuration explicite et méthodes de beans à écrire ;
+- `exercises/05-spring-core/README.md` : J6.1 à J6.5, questions de compréhension et critères de validation.
+
+Le POM racine référence maintenant `labs/05-spring-core`. Aucun comportement métier ni solution de wiring n'a été préimplémenté. Les classes sont volontairement incomplètes ; le build peut donc ne pas être vert avant l'implémentation.
+
+#### Prochaine preuve attendue
+
+1. Implémenter le contrat et les deux repositories.
+2. Ajouter l'injection par constructeur dans `TrainingService`.
+3. Déclarer les beans dans `AppConfig` et résoudre le candidat avec `@Primary` ou `@Qualifier`.
+4. Ajouter des tests du contexte, de la sélection du bean et de la délégation.
+5. Exécuter `mvn -pl labs/05-spring-core -am test` et noter le résultat réel.
+6. Expliquer compilation vs démarrage, `@Configuration` vs `@Bean`, interface vs implémentation, et singleton Spring.
+
+J6 est **préparé, pas validé**. La validation dépend du travail autonome, des tests et de la review.
