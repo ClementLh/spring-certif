@@ -6,4 +6,6 @@ package com.clementlh.labs.springcore;
 public interface TrainingRepository {
 
     // TODO J6: define a minimal operation used by TrainingService.
+    void findAll();
+    void findById(int id);
 }

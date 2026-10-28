@@ -7,6 +7,11 @@ public class TrainingService {
 
     private final TrainingRepository repository;
 
-    // TODO J6: add constructor injection.
-    // TODO J6: add one service operation delegating to the repository.
+    public TrainingService(TrainingRepository repository) {
+        this.repository = repository;
+    }
+
+    public void findById(int id) {
+        repository.findById(id);
+    }
 }
