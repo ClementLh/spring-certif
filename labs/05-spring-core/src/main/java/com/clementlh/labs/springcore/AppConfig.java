@@ -1,6 +1,5 @@
 package com.clementlh.labs.springcore;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -12,13 +11,13 @@ import org.springframework.context.annotation.Primary;
 public class AppConfig {
 
 
-    @Bean("trainingRepository")
+    @Bean
     @Primary
     public TrainingRepository trainingRepository() {
         return new InMemoryTrainingRepository();
     }
 
-    @Bean("trainingRepository")
+    @Bean
     public TrainingRepository jpaTrainingRepository() {
         return new JpaTrainingRepository();
     }
